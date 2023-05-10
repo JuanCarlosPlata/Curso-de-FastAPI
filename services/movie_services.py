@@ -1,5 +1,5 @@
-from models.movie import Movie as MovieModel
-from schemas.movie import Movie
+from models.movie_models import Movie_Model
+from schemas.movie_schemas import Schema_Movie
 
 class MovieServices():
 
@@ -7,24 +7,24 @@ class MovieServices():
         self.db = db
 
     def get_movies(self):
-        result = self.db.query(MovieModel).all()
+        result = self.db.query(Movie_Model).all()
         return result
 
     def get_movie_id(self, id):
-        result = self.db.query(MovieModel).filter(MovieModel.id == id).first()
+        result = self.db.query(Movie_Model).filter(Movie_Model.id == id).first()
         return result
 
     def get_movie_category(self, category):
-        result = self.db.query(MovieModel).filter(MovieModel.category == category).all()
+        result = self.db.query(Movie_Model).filter(Movie_Model.category == category).all()
         return result
 
-    def create_movie(self, movie: Movie):
-        new_movie = MovieModel(**movie.dict())
+    def create_movie(self, movie: Schema_Movie):
+        new_movie = Movie_Model(**movie.dict())
         self.db.add(new_movie)
         self.db.commit()
         return
 
-    def update_movie(self, id: int, data: Movie):
+    def update_movie(self, id: int, data: Schema_Movie):
         movie = self.get_movie_id(id)
         movie.title = data.title or movie.title
         movie.overview = data.overview or movie.overview
@@ -35,7 +35,7 @@ class MovieServices():
         return
 
     def check_duplicate_movie(self, movie):
-        check_movie = self.db.query(MovieModel).filter(MovieModel.title == movie.title, MovieModel.year == movie.year).all()
+        check_movie = self.db.query(Movie_Model).filter(Movie_Model.title == movie.title, Movie_Model.year == movie.year).all()
         return check_movie
 
     def delete_movie(self, id: int):

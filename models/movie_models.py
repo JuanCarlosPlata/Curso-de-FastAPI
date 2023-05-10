@@ -1,7 +1,7 @@
 from config.database import Base
 from sqlalchemy import Column, Integer, String, Float
 
-class Movie(Base):
+class Movie_Model(Base):
 
     __tablename__ = "movies"
 

@@ -4,17 +4,16 @@ from fastapi.responses import JSONResponse
 from typing import List
 from config.database import Session
 from middlewares.jwt_bearer import JWTBearer
-from models.movie import Movie as MovieModel
 from fastapi.encoders import jsonable_encoder
-from schemas.movie import Movie, Update_Movie
-from services.movie import MovieServices
+from schemas.movie_schemas import Schema_Movie, Schema_Update_Movie
+from services.movie_services import MovieServices
 
 
 movie_router = APIRouter()
 
 
-@movie_router.get("/movies", tags=["movies"], response_model=List[Movie], status_code=200, dependencies=[Depends(JWTBearer())])
-def get_movies() -> List[Movie]:
+@movie_router.get("/movies", tags=["movies"], response_model=List[Schema_Movie], status_code=200, dependencies=[Depends(JWTBearer())])
+def get_movies() -> List[Schema_Movie]:
     # In Python, -> is used to indicate the return type of a function.
     db = Session()
     result = MovieServices(db).get_movies()
@@ -23,8 +22,8 @@ def get_movies() -> List[Movie]:
 # Filtrado de películas por id
 
 
-@movie_router.get("/movies/{id}", tags=["movies"], response_model=Movie, status_code=200)
-def get_movies_by_id(id: int = Path(ge=1, le=1000)) -> Movie:
+@movie_router.get("/movies/{id}", tags=["movies"], response_model=Schema_Movie, status_code=200)
+def get_movies_by_id(id: int = Path(ge=1, le=1000)) -> Schema_Movie:
     # In Python, -> is used to indicate the return type of a function.
     db = Session()
     # Comprobar si la película con el id se encuentra en la lista de películas
@@ -38,8 +37,8 @@ def get_movies_by_id(id: int = Path(ge=1, le=1000)) -> Movie:
 # Filtrar película por categoría
 
 
-@movie_router.get("/movies/", tags=["movies"], response_model=List[Movie], status_code=200)
-def get_movies_by_category(category: str = Query(min_length=4, max_length=15)) -> List[Movie]:
+@movie_router.get("/movies/", tags=["movies"], response_model=List[Schema_Movie], status_code=200)
+def get_movies_by_category(category: str = Query(min_length=4, max_length=15)) -> List[Schema_Movie]:
     # In Python, -> is used to indicate the return type of a function.
     db = Session()
     # Comprobar si la categoría se encuentra en la lista de películas
@@ -56,7 +55,7 @@ def get_movies_by_category(category: str = Query(min_length=4, max_length=15)) -
 
 
 @movie_router.post("/movies", tags=["movies"], response_model=dict, status_code=200)
-def create_movie(movie: Movie) -> dict:
+def create_movie(movie: Schema_Movie) -> dict:
     # In Python, -> is used to indicate the return type of a function.
     db = Session()
     # se buscara en la base de datos si la combinación de title y year ya se encuentran en la base de datos
@@ -75,7 +74,7 @@ def create_movie(movie: Movie) -> dict:
 
 
 @movie_router.put("/movies/{id}", tags=["movies"], response_model=dict, status_code=200)
-def update_movie(id: int, movie: Update_Movie) -> dict:
+def update_movie(id: int, movie: Schema_Update_Movie) -> dict:
     # In Python, -> is used to indicate the return type of a function.
     # si no encuentra el id devolverá None
     db = Session()

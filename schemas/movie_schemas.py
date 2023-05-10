@@ -5,7 +5,7 @@ from typing import Optional
 from pydantic import BaseModel, Field
 
 
-class Update_Movie(BaseModel):
+class Schema_Update_Movie(BaseModel):
     # Modelo de película con campos de título, descripción general,
     # año, calificación y categoría. Los campos tienen restricciones y validaciones.
     id: Optional[int] = None
@@ -27,7 +27,7 @@ class Update_Movie(BaseModel):
             }
         }
 
-class Movie(BaseModel):
+class Schema_Movie(BaseModel):
     # Modelo de película con campos de id, título, descripción general,
     # año, calificación y categoría. Los campos tienen restricciones y validaciones.
     id: Optional[int] = None # teniendo este parámetro como optional la base de datos genera el id automáticamente

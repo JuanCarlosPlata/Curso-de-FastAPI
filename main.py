@@ -4,8 +4,8 @@ from fastapi.responses import HTMLResponse
 import uvicorn
 from config.database import engine, Base
 from middlewares.error_handler import ErrorHandler
-from routers.movie import movie_router
-from routers.user import user_router
+from routers.movie_routers import movie_router
+from routers.user_router import user_router
 
 # Para iniciar el servidor local usamos ==> uvicorn main:app --reload --port 5000 --host 0.0.0.0
 
